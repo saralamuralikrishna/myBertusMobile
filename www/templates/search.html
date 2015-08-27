@@ -1,0 +1,32 @@
+<ion-view view-title="Wish List">
+    <ion-content class="padding">
+        my wish list: <b>{{userName}}</b><br />
+        <div class="list list-inset">
+            <label class="item item-input">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input type="text" placeholder="Search" ng-model="Test.searchBarcode">
+            </label>
+        </div>
+        <button class="button button-calm" ng-click="search()">
+            Search
+        </button>
+        <button class="button button-energized" ng-click="scan()" text="scan">Scan</button>
+        <br /><br/>
+        <ion-list>
+            <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="article in Articles" type="item-text-wrap" href="#/tab/chats/{{chat.id}}">
+                <img ng-src="{{article.Links.cover.Href}}" onerror=" imgError(this);">
+                <h2>{{article.Artist}} - {{article.Title}}</h2>
+                <p>({{article.ReleaseDate | date : 'yyyy'}})</p>
+                <p>{{article.Price | monetaryAmount}}</p>
+                <i class="icon ion-chevron-right icon-accessory"></i>
+                <ion-option-button class="button-assertive" ng-click="remove(chat)">
+                    Delete
+                </ion-option-button>
+            </ion-item>
+        </ion-list>
+
+        <label class="item item-input">
+            {{searchResult}}
+        </label>
+    </ion-content>
+</ion-view>

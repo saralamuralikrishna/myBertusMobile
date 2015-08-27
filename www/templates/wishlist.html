@@ -1,0 +1,10 @@
+<ion-view view-title="Wish List">
+
+    <ion-content class="padding">
+        <ion-refresher on-refresh="doRefresh()"></ion-refresher>
+        my wish list: <b>{{userName}}</b><br/>
+        Number of Items in wish list: {{wishListCount}}
+        <br/>
+        <button class="button button-energized" ng-click="scan()" text="scan">Scan</button>
+    </ion-content>
+</ion-view>
