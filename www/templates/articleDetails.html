@@ -1,0 +1,26 @@
+<ion-view >
+    <ion-nav-title>
+        {{articleDetails.Title}}
+    </ion-nav-title>
+    <ion-content class="padding">
+        <div class="list card">
+            <div class="item item-avatar">
+                <img ng-src="{{articleDetails.Links.cover.Href}}" onerror=" imgError(this);">
+                <h2>{{articleDetails.Artist}}</h2>
+                <p>{{articleDetails.Title}}</p>
+                <p ng-show="articleDetails.Price!=null">{{articleDetails.Price !=null? (articleDetails.Price | monetaryAmount) : '--'}}</p>
+            </div>
+            <div class="item item-body">
+                <p>{{articleDetails.Info}}</p>
+            </div>
+            <div class="item tabs tabs-secondary tabs-icon-left">
+                <a class="tab-item" href="#">
+                    <i class="icon ion-ios-heart"></i>
+                </a>
+                <a class="tab-item" href="#">
+                    <i class="icon ion-ios-cart"></i>
+                </a>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

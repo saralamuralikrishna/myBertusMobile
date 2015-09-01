@@ -1,5 +1,5 @@
 angular.module('starter.services', [])
-.factory('Search', function searchService($http, $q, $window) {
+.factory('Search', function searchService($http, $q, $window, appSettings) {
     var service = {};
 
     var showError = function(msg) {
@@ -12,7 +12,7 @@ angular.module('starter.services', [])
     };
 
     service.search = function(filter) {
-        var baseUri = 'http://apimobile-test.azurewebsites.net';
+        var baseUri = appSettings.baseURI; //'http://apimobile-test.azurewebsites.net';
         var deferred = $q.defer();
         var url = baseUri + '/api/articles/';
         var req = {
@@ -59,9 +59,9 @@ angular.module('starter.services', [])
 })
 
 
-.factory('Login', function ($http, $q, $window) {
+.factory('Login', function ($http, $q, $window, appSettings) {
     var loginfunc = function (userName, password) {
-        var baseUri = 'http://apimobile-test.azurewebsites.net';
+        var baseUri =appSettings.baseURI;  // 'http://apimobile-test.azurewebsites.net';
         var deferred = $q.defer();
         var url = baseUri + '/Token';
         var loginData = {
@@ -74,12 +74,6 @@ angular.module('starter.services', [])
             data: 'userName=' + userName + '&password=' + password + '&grant_type=password',
             withCredentials: true
         };
-
-        //var req = {
-        //    url: 'https://localhost:44303/Account/LoginService', 
-        //    method: 'POST',
-        //    data: 'userName=' + userName + '&password=' + password
-        //}
 
         $http(req)
             .success(function (data, status, headers, cfg) {
@@ -118,9 +112,36 @@ angular.module('starter.services', [])
     };
 })
 
-.factory('WishList', function ($http, $q, $window) {
+.factory('ArticleDetail', function($q, $window,$http, appSettings){
+    var service = {};
+
+    service.getArticleDetails = function(articleNumber){
+        var baseUri = appSettings.baseURI;
+        var deferred = $q.defer();
+        var url = baseUri + '/api/article/' + articleNumber;
+        var req = {
+            method: 'GET',
+            url: url,
+            withCredentials: true,
+            headers: { 'Authorization': 'Bearer ' + $window.localStorage['authenticationtoken'] }
+        };
+        $http(req)
+            .success(function (data, status, headers, cfg) {
+                console.log(data);
+                deferred.resolve(data);
+            })
+            .error(function(errorPayload) {
+                deferred.reject(errorPayload);
+            });
+        return deferred.promise;
+    };
+    return service;
+
+})
+
+.factory('WishList', function ($http, $q, $window, appSettings) {
         var getCount = function() {
-            var baseUri = 'http://apimobile-test.azurewebsites.net';
+            var baseUri = appSettings.baseURI; //'http://apimobile-test.azurewebsites.net';
             var deferred = $q.defer();
             var url = baseUri + '/api/wishlist/count';
             var req = {

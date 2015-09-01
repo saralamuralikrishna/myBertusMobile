@@ -71,7 +71,7 @@
         $scope.doRefresh();
     })
 
-.controller('HomeCtrl', function ($scope, Login, $state, $cordovaBarcodeScanner, $ionicPlatform) {
+.controller('HomeCtrl', function ($scope, Login, $state, $cordovaBarcodeScanner, $ionicPlatform, $ionicLoading) {
     $scope.data = {
         username: '',
         password: ''
@@ -80,12 +80,17 @@
         $state.go('main.wishlist');
     }
     $scope.login = function () {
+        $ionicLoading.show({
+          template: 'Loading...'
+        });
         Login.login($scope.data.username, $scope.data.password)
         .then(function (payload) {
             $state.go('main.wishlist');
         }, function (errorPayload) {
             alert(errorPayload);
-        })
+        }).finally(function(){
+            $ionicLoading.hide();
+        });
     };
 
     $scope.scan = function () {
@@ -153,6 +158,23 @@
 
     };
 
+
+    $scope.goToDetails= function(articleId){
+        if(articleId)
+        {
+            $state.go('main.details',{articleNumber: articleId});
+        }
+    };
+})
+
+.controller('ArticleCtrl', function($scope,$stateParams, ArticleDetail, $ionicLoading){
+    $scope.articleNumber = $stateParams.articleNumber;
+
+    ArticleDetail.getArticleDetails($stateParams.articleNumber).then(function(payload){
+        $scope.articleDetails = payload;
+    }, function (errorPayload){
+        $scope.error = errorPayload;
+    });
 })
 
 .controller('ChatDetailCtrl', function ($scope, $stateParams, Chats) {

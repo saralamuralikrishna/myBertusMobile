@@ -23,6 +23,28 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
   });
 })
 
+.filter('currency', function (numberFilter) {
+    return function currencyFilter(input, currencyCode) {
+        switch (currencyCode) {
+            case 'EUR':
+                return 'EUR ' + numberFilter(input, 2);
+            case 'CZK':
+                return 'CZK ' + numberFilter(input, 0);
+            case 'HUF':
+                return 'HUF ' + numberFilter(input, 0);
+            default:
+                return currencyCode + ': ' + input;
+        }
+    }
+})
+
+.filter('monetaryAmount', function (currencyFilter) {
+    return function monetaryAmountFilter(monetaryAmount) {
+        return currencyFilter(monetaryAmount.Amount, monetaryAmount.Currency);
+    }
+})
+.constant('appSettings', { 'baseURI': 'http://apimobile-test.bertus.com' })
+//http://localhost/ApiMobile.Bertus
 // .run(['$http', '$cookies', function($http, $cookies) {
   // $http.defaults.headers.post['X-CSRFToken'] = $cookies.csrftoken;
 // }])
@@ -64,7 +86,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
       }
     }
   })
-
   .state('tab.chats', {
       url: '/chats',
       views: {
@@ -110,18 +131,27 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
                 controller: 'WishListCtrl'
             }    
         }
-        
       })
-	  
-	  .state('main.search', {
-		  url: '/search',
-		  views : {
-				'main' :{
-						templateUrl:'templates/search.html',
-						controller:'SearchCtrl'
-				}
-			}
-		  });
+    .state('main.search', {
+      url: '/search',
+      views : {
+            'main' :{
+                    templateUrl:'templates/search.html',
+                    controller:'SearchCtrl'
+            }
+        }
+    })
+    .state('main.details',{
+        url:'/details/{articleNumber}',
+        views:
+        {
+            'main':{
+                templateUrl:'templates/articleDetails.html',
+                controller:'ArticleCtrl'
+            }
+        }
+
+    });
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/home');

@@ -1,6 +1,5 @@
-<ion-view view-title="Wish List">
+<ion-view view-title="Search">
     <ion-content class="padding">
-        my wish list: <b>{{userName}}</b><br />
         <div class="list list-inset">
             <label class="item item-input">
                 <i class="icon ion-search placeholder-icon"></i>
@@ -12,8 +11,9 @@
         </button>
         <button class="button button-energized" ng-click="scan()" text="scan">Scan</button>
         <br /><br/>
+        <!--href="#/main/search/articleDetails/{{article.Id}}"  ui-sref="main.search.details({articleNumber: article.Id})"  ng-click="goToDetails(article.Id)"-->
         <ion-list>
-            <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="article in Articles" type="item-text-wrap" href="#/tab/chats/{{chat.id}}">
+            <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="article in Articles" type="item-text-wrap"  ui-sref="main.details({articleNumber: article.Id})" >
                 <img ng-src="{{article.Links.cover.Href}}" onerror=" imgError(this);">
                 <h2>{{article.Artist}} - {{article.Title}}</h2>
                 <p>({{article.ReleaseDate | date : 'yyyy'}})</p>
