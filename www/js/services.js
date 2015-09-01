@@ -101,7 +101,8 @@ angular.module('starter.services', [])
     };
 
     var logout = function () {
-        $window.localStorage.clear();
+        $window.localStorage['username'] = null;
+        $window.localStorage['authenticationtoken'] = null;
     };
 
     return {
